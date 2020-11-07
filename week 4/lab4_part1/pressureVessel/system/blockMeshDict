@@ -1,0 +1,128 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 0.01;
+
+L0 -9;
+L1 0.0;
+L2 100;
+L3 109;
+
+R0 0.0;
+R1 2.5;
+R2 25;
+R3 2.5;
+
+W0 0.0;
+
+W1 #calc "$R1*-0.043660943";
+W2 #calc "$R1*0.043660943";
+
+W3 #calc "$R2*-0.043660943";
+W4 #calc "$R2*0.043660943";
+
+W5 #calc "$R3*-0.043660943";
+W6 #calc "$R3*0.043660943";
+
+vertices
+(
+
+($R0 $W0 $L0) // 0
+($R1 $W1 $L0) // 1
+($R1 $W2 $L0) // 2
+($R0 $W0 $L1) // 3
+($R1 $W1 $L1) // 4
+($R1 $W2 $L1) // 5
+($R2 $W3 $L1) // 6
+($R2 $W4 $L1) // 7
+($R0 $W0 $L2) // 8
+($R3 $W5 $L2) // 9
+($R3 $W6 $L2) // 10
+($R2 $W3 $L2) // 11
+($R2 $W4 $L2) // 12
+($R3 $W5 $L3) // 13
+($R3 $W6 $L3) // 14
+($R0 $W0 $L3) // 15
+
+);
+
+blocks
+(
+    hex ( 0  1  2  0  3  4  5  3) (15 1 80) simpleGrading (1 1 1)	//0
+    hex ( 3  4  5  3  8  9 10  8) (15 1 180) simpleGrading (1 1 1)	//1
+    hex ( 4  6  7  5  9 11 12 10) (150 1 180) simpleGrading (1 1 1)	//2
+    hex ( 8  9 10  8 15 13 14 15) (15 1 80) simpleGrading (1 1 1)	//3
+);
+
+edges
+(
+);
+
+defaultPatch
+{
+    name walls;
+    type wall;
+}
+
+boundary
+(
+    outlet
+    {
+        type patch;
+        faces
+        (
+            (13 15 15 14)
+        );
+    }
+    inlet
+    {
+        type patch;
+        faces
+        (
+            (1 0 0 2)
+        );
+    }
+    
+    frontAndBack_pos
+    {
+        type wedge;
+        faces
+        (
+            (2 0 3 5)
+            (5 3 8 10)
+            (7 5 10 12)
+            (10 8 15 14)
+        );
+    }
+    frontAndBack_neg
+    {
+        type wedge;
+        faces
+        (
+            (0 1 4 3)
+            (3 4 9 8)
+            (4 6 11 9)
+            (8 9 13 15)
+        );
+    }
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //

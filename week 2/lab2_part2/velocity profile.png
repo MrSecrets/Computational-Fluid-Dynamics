@@ -1,0 +1,8 @@
+The contour is fully developed if the length of pipe is greater than the entrance length.
+
+D = 110*2/25 = 8.8
+Entrance length = 0.06*Re*D = 0.06*500*8.8 mm = 264mm
+Pipe length = 20*D = 176 mm
+
+No,
+The flow is not fully developed
