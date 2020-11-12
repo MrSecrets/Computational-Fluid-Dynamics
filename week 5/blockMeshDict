@@ -1,0 +1,119 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Note: this file is a Copy of $FOAM_TUTORIALS/resources/blockMesh/pitzDaily
+
+convertToMeters 0.01;
+
+vertices
+(
+	(0	  0				-9)    // 0
+	(2.5  -0.109152357  -9)    // 1
+	(2.5  0.109152357   -9)    // 2
+	(0    0				 0)    // 3
+	(2.5  -0.109152357   0)    // 4
+	(2.5  0.109152357	 0)    // 5
+	(25   -1.091523573   0)    // 6
+	(25   1.091523573	 0)    // 7
+	(0    0			   100)    // 8
+	(2.5  -0.109152357 100)    // 9
+	(2.5  0.109152357  100)    // 10
+	(25   -1.091523573 100)    // 11
+	(25   1.091523573  100)    // 12
+	(2.5  -0.109152357 109)    // 13
+	(2.5  0.109152357  109)    // 14
+	(0    0			   109)    // 15
+);
+
+
+blocks
+(
+	hex  (0 1 2 0 3 4 5 3)		(15 1 80)	simpleGrading (1 1 1)
+	hex  (3 4 5 3 8 9 10 8)		(15 1 180)  simpleGrading (1 1 1)
+	hex  (4 6 7 5 9 11 12 10)	(150 1 180) simpleGrading (1 1 1)
+	hex  (8 9 10 8 15 13 14 15) (15  1  80) simpleGrading (1 1 1)
+);
+
+boundary
+(
+	inlet
+	{
+		type patch;
+		faces
+		(
+			(1 0 0 2)
+		);
+	}
+	
+	walls
+	{
+		type  wall;
+		faces
+		(
+			(6 7 12 11)
+			(1 2 5 4)
+			(6 4 5 7)
+			(11 9 10 12)
+			(9 10 14 13)
+		);
+	}
+	
+	outlet
+	{
+		type patch;
+		faces
+		(
+			(13 15 15 14)
+		);
+	}
+	
+	axis
+	{
+		type empty;
+		faces
+		(
+			(0 3 3 0)
+			(3 8 8 3)
+			(8 15 15 8)
+		);
+	}
+
+	frontAndBack_pos
+	{
+		type wedge;
+		faces
+		(
+			(2 0 3 5)
+			(5 3 8 10)
+			(7 5 10 12)
+			(10 8 15 14)
+		);
+	}
+
+	frontAndBack_neg
+	{
+		type  wedge;
+		faces
+		(
+			(0 1 4 3)
+			(3 4 9 8)
+			(4 6 11 9)
+			(8 9 13 15)
+		);
+	}
+);
+
+// ************************************************************************* //
